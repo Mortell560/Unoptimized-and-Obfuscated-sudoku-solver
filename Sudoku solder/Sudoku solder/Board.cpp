@@ -56,13 +56,14 @@ namespace sudoku {
 				if (board._board[x + i * Board::getRow(board)] == num) {
 					return false;
 				}
+			}
 
-				for (int j{ 0 }; j < Board::getCol(board); j++) {
-					if (board._board[j + y * Board::getCol(board)] == num) {
-						return false;
-					}
+			for (int j{ 0 }; j < Board::getCol(board); j++) {
+				if (board._board[j + y * Board::getCol(board)] == num) {
+					return false;
 				}
 			}
+
 			const int squareSize = Board::getSquareSize(board);
 			//just use a board to understand this bullshit oh and also // doesn't work in C++
 			int x_square_coord = (int)(x /squareSize) * squareSize;
@@ -132,20 +133,22 @@ namespace sudoku {
 
 	//!\brief Solves the problem for ya (all solutions are included and it's very slow)
 	void Board::solveProblem(Board& board) {
-		if (Board::getAllEmptyPositions(board).size() == 0) {
-			std::cout << "\nHere's one solution \n";
-			Board::showBoard(board);
-			return;
-		}
-		auto possible_pos = Board::getAllEmptyPositions(board);
-		for (auto& coord : possible_pos) {
-			auto possible_num = Board::getPossibleNumCell(board, coord);
-			if (possible_num.size() > 0) {
-				setNumCell(board, coord, possible_num[0]);
-				Board::solveProblem(board);
-				removeNumCell(board, coord);
+		for (int j{ 0 }; j < Board::getCol(board); j++) {
+			for (int i{ 0 }; i < Board::getRow(board); i++) {
+				if (Board::isEmptyCell(board, std::make_pair(i, j))) {
+					for (int num{ 1 }; num < 10; num++) {
+						auto coords = std::pair<int, int>(i, j);
+						if (Board::checkForCell(board, coords, num)) {
+							setNumCell(board, coords, num);
+							Board::solveProblem(board);
+							removeNumCell(board, coords);
+						}
+					}
+					return;
+				}
 			}
 		}
+		Board::showBoard(board);
 	}
 
 	//!\brief Same thing as solveProblem but for one solution

@@ -3,10 +3,11 @@
 #include "Board.hpp"
 
 int main(int argc, char** argv) {
-	auto board = sudoku::Board::Board(2 ,2 ,2);
-	sudoku::Board::generateRndProblem(board, 1);
+	auto board = sudoku::Board::Board();
+	sudoku::Board::generateRndProblem(board, 200);
 	sudoku::Board::showBoard(board);
-	sudoku::Board::solveProblemUnique(board);
+	sudoku::Board::solveProblem(board);
+	sudoku::Board::showBoard(board);
 	return 0;
 }
 
