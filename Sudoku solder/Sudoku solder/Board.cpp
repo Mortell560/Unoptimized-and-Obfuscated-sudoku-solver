@@ -131,7 +131,7 @@ namespace sudoku {
 		return list;
 	}
 
-	//!\brief Solves the problem for ya (all solutions are included and it's very slow)
+	//!\brief Solves the problem for ya (all solutions are included and it's very fast unless there are too many solutions)
 	void Board::solveProblem(Board& board) {
 		for (int j{ 0 }; j < Board::getCol(board); j++) {
 			for (int i{ 0 }; i < Board::getRow(board); i++) {
